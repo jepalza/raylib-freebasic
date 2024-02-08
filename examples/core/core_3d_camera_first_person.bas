@@ -1,64 +1,81 @@
-#include "../../raylib.bi"
+/'*******************************************************************************************
+*
+*   raylib [core] example - 3d camera first person
+*
+*   This example has been created using raylib 1.3 (www.raylib.com)
+*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*
+*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*
+********************************************************************************************'/
+
+#include once "../raylib.bi"
 
 #define MAX_COLUMNS 20
 
-dim as integer screen_width = 800
-dim as integer screen_height = 450
+'' Initialization
+const as long screenWidth = 800, screenHeight = 450
 
-InitWindow(screen_width, screen_height, "raylib-freebasic [core] example - 3d camera first person")
+InitWindow( screenWidth, screenHeight, "raylib [core] example - 3d camera first person" )
 
-dim as camera cam
-cam.position = vector3(4.0, 2.0, 4.0)
-cam.target = vector3(0, 1.8, 0)
-cam.up = vector3(0, 1, 0)
-cam.fovy = 60
-cam.projection = CAMERA_PERSPECTIVE
+dim as Camera camera
 
-dim as short heights(MAX_COLUMNS)
-dim as vector3 positions(MAX_COLUMNS)
-dim as rlcolor col(MAX_COLUMNS)
+with camera
+  .position = Vector3( 4.0f, 2.0f, 4.0f )
+  .target = Vector3( 0.0f, 1.8f, 0.0f )
+  .up = Vector3( 0.0f, 1.0f, 0.0f )
+  .fovy = 60.0f
+  .projection = CAMERA_PERSPECTIVE
+end with
 
-for i as integer = 0 to MAX_COLUMNS
-  heights(i) = GetRandomValue(1, 12)
-  positions(i) = vector3(GetRandomValue(-15, 15), heights(i)/2.0, GetRandomValue(-15, 15))
-  col(i) = rlcolor(GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255)
-next i
+'' Generates some random columns
+dim as single heights( 0 to MAX_COLUMNS - 1 )
+dim as Vector3 positions( 0 to MAX_COLUMNS - 1 )
 
-SetCameraMode(cam, CAMERA_FIRST_PERSON)
+dim as RLColor colours( 0 to MAX_COLUMNS - 1 )
 
-SetTargetFPS(60)
+for i as integer = 0 to MAX_COLUMNS - 1
+  heights( i ) = GetRandomValue( 1, 12 )
+  positions( i ) = Vector3( GetRandomValue( -15, 15 ), heights( i ) / 2, GetRandomValue( -15, 15 ) )
+  colours( i ) = RLColor( GetRandomValue( 20, 255 ), GetRandomValue( 10, 55 ), 30, 255 )
+next
 
-while not WindowShouldClose()
+''SetCameraMode( camera, CAMERA_FIRST_PERSON ) ' despreciado en la V5.0, usar UPDATECAMERA
 
-  UpdateCamera(@cam)
+SetTargetFPS( 60 )
 
-  BeginDrawing()
-    
-    ClearBackground(RAYWHITE)
+DisableCursor() ' limita el cursor a la ventana, y evitar que pierda movimiento al salir
+
+'' Main game loop
+do while WindowShouldClose()=0
+  '' Update
+  UpdateCamera( @camera, CAMERA_FIRST_PERSON  ) ' en la v5.0 usamos esta en lugar de setcameramode
   
-    BeginMode3D(cam)
+  '' Draw
+  BeginDrawing()
+    ClearBackground( RAYWHITE )
+    
+    BeginMode3D( camera )
+      DrawPlane( Vector3( 0.0f, 0.0f, 0.0f ), Vector2( 32.0f, 32.0f ), LIGHTGRAY ) '' Draw ground
+      DrawCube( Vector3( -16.0f, 2.5f, 0.0f ), 1.0f, 5.0f, 32.0f, BLUE )     '' Draw a blue wall
+      DrawCube( Vector3( 16.0f, 2.5f, 0.0f ), 1.0f, 5.0f, 32.0f, LIME )      '' Draw a green wall
+      DrawCube( Vector3( 0.0f, 2.5f, 16.0f ), 32.0f, 5.0f, 1.0f, GOLD )      '' Draw a yellow wall
       
-      DrawPlane(vector3(0.0, 0.0, 0.0), vector2(32.0, 32.0), LIGHTGRAY)
-      DrawCube(vector3(-16.0, 2.5, 0.0), 1.0, 5.0, 32.0, BLUE)
-      DrawCube(vector3(16.0, 2.5, 0.0), 1.0, 5.0, 32.0, LIME)
-      DrawCube(vector3(0.0, 2.5, 16.0), 32.0, 5.0, 1.0, GOLD)
-      
-      for j as integer = 0 to MAX_COLUMNS
-        DrawCube(positions(j), 2.0, heights(j), 2.0, col(j))
-        DrawCubeWires(positions(j), 2.0, heights(j), 2.0, MAROON)
-      next j
-
+      '' Draw some cubes around
+      for i as integer = 0 to MAX_COLUMNS - 1
+        DrawCube( positions( i ), 2.0f, heights( i ), 2.0f, colours( i ) )
+        DrawCubeWires( positions( i ), 2.0f, heights( i ), 2.0f, MAROON )
+      next
     EndMode3D()
     
-    DrawRectangle( 10, 10, 220, 70, Fade(SKYBLUE, 0.5))
-    DrawRectangleLines( 10, 10, 220, 70, BLUE)
-
-    DrawText("First person camera default controls:", 20, 20, 10, BLACK)
-    DrawText("- Move with keys: W, A, S, D", 40, 40, 10, DARKGRAY)
-    DrawText("- Mouse move to look around", 40, 60, 10, DARKGRAY)
-
-
+    DrawRectangle( 10, 10, 220, 70, Fade( SKYBLUE, 0.5f ) )
+    DrawRectangleLines( 10, 10, 220, 70, BLUE )
+    
+    DrawText( "First person camera default controls:", 20, 20, 10, BLACK )
+    DrawText( "- Move with keys: W, A, S, D", 40, 40, 10, DARKGRAY )
+    DrawText( "- Mouse move to look around", 40, 60, 10, DARKGRAY )
   EndDrawing()
-wend
+loop
 
+'' De-Initialization
 CloseWindow()

@@ -1,21 +1,11 @@
 /'*******************************************************************************************
 *
-*   raylib [core] example - Basic window
+*   raylib [text] example - Text formatting
 *
-*   Welcome to raylib!
-*
-*   To test examples, just press F6 and execute raylib_compile_execute script
-*   Note that compiled executable is placed in the same folder as .c file
-*
-*   You can find all basic examples on C:\raylib\raylib\examples folder or
-*   raylib official webpage: www.raylib.com
-*
-*   Enjoy using raylib. :)
-*
-*   This example has been created using raylib 1.0 (www.raylib.com)
+*   This example has been created using raylib 1.1 (www.raylib.com)
 *   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
 *
-*   Copyright (c) 2013-2016 Ramon Santamaria (@raysan5)
+*   Copyright (c) 2014 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************'/
 
@@ -25,14 +15,17 @@
 const as long _
   screenWidth = 800, screenHeight = 450
 
-InitWindow( screenWidth, screenHeight, "raylib [core] example - basic window" )
+InitWindow( screenWidth, screenHeight, "raylib [text] example - text formatting" )
 
-DisableCursor() ' limita el cursor a la ventana, y evitar que pierda movimiento al salir
+dim as long _
+  score = 100020, _
+  hiscore = 200450, _
+  lives = 5
 
 SetTargetFPS( 60 )
 
 '' Main game loop
-do while( WindowShouldClose()=0)
+do while(WindowShouldClose()=0)
   '' Update
   ''----------------------------------------------------------------------------------
   '' TODO: Update your variables here
@@ -41,7 +34,11 @@ do while( WindowShouldClose()=0)
   '' Draw
   BeginDrawing()
     ClearBackground( RAYWHITE )
-    DrawText( "Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY )
+    
+    DrawText( TextFormat( "Score: %08i", score ), 200, 80, 20, RED )
+    DrawText( TextFormat( "HiScore: %08i", hiscore ), 200, 120, 20, GREEN )
+    DrawText( TextFormat( "Lives: %02i", lives ), 200, 160, 40, BLUE )
+    DrawText( TextFormat( "Elapsed Time: %02.02f ms", GetFrameTime() * 1000 ), 200, 220, 20, BLACK )
   EndDrawing()
 loop
 

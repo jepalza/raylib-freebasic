@@ -1,21 +1,11 @@
 /'*******************************************************************************************
 *
-*   raylib [core] example - Basic window
-*
-*   Welcome to raylib!
-*
-*   To test examples, just press F6 and execute raylib_compile_execute script
-*   Note that compiled executable is placed in the same folder as .c file
-*
-*   You can find all basic examples on C:\raylib\raylib\examples folder or
-*   raylib official webpage: www.raylib.com
-*
-*   Enjoy using raylib. :)
+*   raylib [textures] example - Texture loading and drawing
 *
 *   This example has been created using raylib 1.0 (www.raylib.com)
 *   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
 *
-*   Copyright (c) 2013-2016 Ramon Santamaria (@raysan5)
+*   Copyright (c) 2014 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************'/
 
@@ -25,14 +15,12 @@
 const as long _
   screenWidth = 800, screenHeight = 450
 
-InitWindow( screenWidth, screenHeight, "raylib [core] example - basic window" )
+InitWindow( screenWidth, screenHeight, "raylib [textures] example - texture loading and drawing" )
 
-DisableCursor() ' limita el cursor a la ventana, y evitar que pierda movimiento al salir
-
-SetTargetFPS( 60 )
+dim as Texture2D texture = LoadTexture( "resources/raylib_logo.png" )
 
 '' Main game loop
-do while( WindowShouldClose()=0)
+do while(WindowShouldClose()=0)
   '' Update
   ''----------------------------------------------------------------------------------
   '' TODO: Update your variables here
@@ -40,10 +28,14 @@ do while( WindowShouldClose()=0)
   
   '' Draw
   BeginDrawing()
-    ClearBackground( RAYWHITE )
-    DrawText( "Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY )
+    ClearBackground(RAYWHITE)
+    
+    DrawTexture( texture, screenWidth / 2 - texture.width_ / 2, screenHeight / 2 - texture.height_ / 2, WHITE )
+    DrawText( "this IS a texture!", 360, 370, 10, GRAY )
   EndDrawing()
 loop
 
 '' De-Initialization
+UnloadTexture( texture )
+
 CloseWindow()
