@@ -1,3 +1,5 @@
+reparados algunos errores en RAYLIB.BI y añadidos docenas de ejemplos 
+
 # raylib-freebasic -> v5.0
 
 [FreeBasic](https://freebasic.net/) bindings for [raylib](https://github.com/raysan5/raylib)  
