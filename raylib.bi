@@ -1,4 +1,4 @@
-#pragma once
+#Pragma once
 
 #include once "crt/long.bi"
 #include once "crt/stdarg.bi"
@@ -357,11 +357,13 @@ type Model
 	bindPose as Transform ptr
 end type
 
+' jepalza, faltaba "names"
 type ModelAnimation
-	boneCount as long
-	frameCount as long
-	bones as BoneInfo ptr
-	framePoses as Transform ptr ptr
+    As Long boneCount           ' Number of bones
+    As Long frameCount          ' Number of animation frames
+    As BoneInfo Ptr bones         ' Bones information (skeleton)
+    As Transform Ptr Ptr framePoses  ' Poses array by frame
+    As ZString*32 names           ' Animation name
 end type
 
 type Ray
@@ -376,10 +378,33 @@ type RayCollision
 	normal as Vector3
 end type
 
-type BoundingBox
-	min as Vector3
-	max as Vector3
+
+
+
+' jepalza, 2024, mejor empleo de BoundingBox
+'type BoundingBox
+'	min as Vector3
+'	max as Vector3
+'end type
+
+' BoundingBox
+Type BoundingBox
+	declare constructor()
+	declare constructor( as Vector3, as Vector3 )
+	
+    As Vector3 mins             ' Minimum vertex box-corner
+    As Vector3 maxs             ' Maximum vertex box-corner
 end type
+
+constructor BoundingBox()
+	end constructor
+constructor BoundingBox( _min as Vector3, _max as Vector3 )
+  this.mins = _min
+  this.maxs = _max
+end Constructor
+
+
+
 
 type Wave
 	frameCount as ulong
@@ -928,10 +953,10 @@ declare sub BeginBlendMode(byval mode as long)
 declare sub EndBlendMode()
 declare sub BeginScissorMode(byval x as long, byval y as long, byval width_ as long, byval height_ as long)
 declare sub EndScissorMode()
-declare sub BeginVrStereoMode(byval config as VrStereoConfig)
+declare sub BeginVrStereoMode(byref config as VrStereoConfig)
 declare sub EndVrStereoMode()
 declare function LoadVrStereoConfig(byval device as VrDeviceInfo) as VrStereoConfig
-declare sub UnloadVrStereoConfig(byval config as VrStereoConfig)
+declare sub UnloadVrStereoConfig(byref config as VrStereoConfig)
 declare function LoadShader(byval vsFileName as const zstring ptr, byval fsFileName as const zstring ptr) as Shader
 declare function LoadShaderFromMemory(byval vsCode as const zstring ptr, byval fsCode as const zstring ptr) as Shader
 declare function IsShaderReady(byval shader as Shader) as byte
@@ -1194,7 +1219,7 @@ declare sub DrawTextureV(byval texture as Texture2D, byval position as Vector2, 
 declare sub DrawTextureEx(byval texture as Texture2D, byval position as Vector2, byval rotation as single, byval scale as single, byval tint as RLColor)
 declare sub DrawTextureRec(byval texture as Texture2D, byval source as Rectangle, byval position as Vector2, byval tint as RLColor)
 declare sub DrawTexturePro(byval texture as Texture2D, byval source as Rectangle, byval dest as Rectangle, byval origin as Vector2, byval rotation as single, byval tint as RLColor)
-declare sub DrawTextureNPatch(byval texture as Texture2D, byval nPatchInfo as NPatchInfo, byval dest as Rectangle, byval origin as Vector2, byval rotation as single, byval tint as RLColor)
+declare sub DrawTextureNPatch(byval texture as Texture2D, byval NPatchInfo_ as NPatchInfo, byval dest as Rectangle, byval origin as Vector2, byval rotation as single, byval tint as RLColor)
 declare function Fade(byval color as RLColor, byval alpha_ as single) as RLColor
 declare function ColorToInt(byval color_ as RLColor) as long
 declare function ColorNormalize(byval color_ as RLColor) as Vector4
