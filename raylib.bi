@@ -101,6 +101,9 @@ const RAD2DEG = 180.0f / PI
 	end constructor
 #endif
 
+
+
+
 #ifndef Vector3
 	type Vector3
 		x as single
@@ -119,6 +122,9 @@ const RAD2DEG = 180.0f / PI
 	    this.z = z
 	end constructor
 #endif
+
+
+
 
 #ifndef Vector4
 	type Vector4
@@ -141,9 +147,15 @@ const RAD2DEG = 180.0f / PI
 	end constructor
 #endif
 
+
+
+
 #ifndef Quaternion
 	type Quaternion as Vector4
 #endif
+
+
+
 
 #ifndef Matrix
 	type Matrix
@@ -164,7 +176,10 @@ const RAD2DEG = 180.0f / PI
 		m11 as single
 		m15 as single
 	end type
-#endif
+#EndIf
+
+
+
 
 type RLColor
 	r as ubyte
@@ -185,6 +200,9 @@ end constructor
 constructor RLColor()
 end constructor
 
+
+
+
 type Rectangle
 	x as single
 	y as single
@@ -203,6 +221,9 @@ constructor Rectangle(x as single, y as single, width_ as single, height_ as sin
 	this.width_ = width_
 	this.height_ = height_
 end constructor
+
+
+
 
 type Image
 	data_ as any ptr
@@ -257,6 +278,9 @@ type Font
 	glyphs as GlyphInfo ptr
 end type
 
+
+
+
 type Camera3D
 	position as Vector3
 	target as Vector3
@@ -280,6 +304,9 @@ end constructor
 
 type Camera as Camera3D
 
+
+
+
 type Camera2D
 	offset as Vector2
 	target as Vector2
@@ -298,6 +325,9 @@ constructor Camera2D(offset as Vector2, target as Vector2, rotation as single, z
 	this.rotation = rotation 
 	this.zoom = zoom
 end constructor 
+
+
+
 
 type Mesh
 	vertexCount as long
@@ -357,7 +387,7 @@ type Model
 	bindPose as Transform ptr
 end type
 
-' jepalza, faltaba "names"
+' jepalza 2024, faltaba "names"
 type ModelAnimation
     As Long boneCount           ' Number of bones
     As Long frameCount          ' Number of animation frames
