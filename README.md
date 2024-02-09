@@ -1,5 +1,7 @@
-reparados algunos errores en RAYLIB.BI y añadidos docenas de ejemplos
-añadidos easings y rayguo para mas funciones, y añadidos ejemplos de cada uno
+reparados algunos errores en RAYLIB.BI y añadidos docenas de ejemplos.
+
+añadidos easings y raygui para mas funciones, y añadidos ejemplos de cada uno.
+
 
 # raylib-freebasic -> v5.0
 
